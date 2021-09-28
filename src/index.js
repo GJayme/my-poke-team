@@ -1,6 +1,6 @@
 const express = require('express');
 
-const userRoutes = require('./routes/userRoutes');
+const routes = require('./routes');
 
 let app = express();
 const PORT = 8080;
@@ -9,7 +9,7 @@ app.use(express.urlencoded({extended: false}));
 
 app.use(express.json());
 
-app.use("/api/v1/users", userRoutes);
+app.use("/", routes);
 
 const db = require('./models');
 
@@ -19,10 +19,6 @@ const db = require('./models');
 // });
 
 db.sequelize.sync();
-
-app.get('/', (req, res) => {
-    res.json({ message: "ralalal"});
-});
 
 app.listen(PORT, () =>{
     console.log(`Application is listening ot port ${PORT}`);
