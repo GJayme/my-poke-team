@@ -1,29 +1,62 @@
 const axios = require('axios');
-const {log} = require("nodemon/lib/utils");
 
 exports.getPokeByIdOrName = async (req, res) => {
     const pokeNameOrId = req.body.name;
-
-    function setAbilities(poke) {
-        const abilities = [];
-        poke.abilities.forEach(ability => abilities.push(ability.ability.name))
-        return abilities;
-    }
 
     let poke = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokeNameOrId}/`)
         .then(resp => resp.data)
         .catch(err => err)
 
-    const abilities = setAbilities(poke);
+    const pokeDTO = buildPokeDto(poke);
 
-    const pokeDTO = {
+    res.json(pokeDTO);
+}
+
+exports.getPokeList = async (req, res) => {
+    let limit = 25;
+    const numberPage = req.params.paginate;
+    let offset = limit*numberPage - limit;
+
+    let poke = await axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`)
+        .then(resp => resp.data)
+        .catch(err => err)
+
+    const pokeList = await setPokeList(poke)
+
+    res.json(pokeList);
+}
+
+async function setPokeList(poke) {
+    const list = [];
+
+    for (const p of poke.results) {
+        let completedPoke = await getInfo(p);
+        let pokeDTO = buildPokeDto(completedPoke);
+        list.push(pokeDTO);
+    }
+    return list;
+}
+
+async function getInfo(poke) {
+    return await axios.get(`https://pokeapi.co/api/v2/pokemon/${poke.name}/`)
+        .then(resp => resp.data)
+        .catch(err => err);
+}
+
+function buildPokeDto(poke) {
+    const abilities = setAbilities(poke);
+    return {
         id: poke.id,
         name: poke.name,
         abilities: abilities,
         height: poke.height,
         weight: poke.weight,
         image: poke.sprites.front_default
-    }
+    };
+}
 
-    res.json(pokeDTO);
+function setAbilities(poke) {
+    const abilities = [];
+    poke.abilities.forEach(ability => abilities.push(ability.ability.name))
+    return abilities;
 }
