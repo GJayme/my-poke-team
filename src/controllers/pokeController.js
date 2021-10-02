@@ -1,4 +1,4 @@
-const { getPokeByIdOrName, getPokeList } = require('../services/pokeService');
+const { getPokeByIdOrName, getPokeList } = require('../services/pokeService/findPokeService');
 
 exports.findOne = (req, res) => {
     getPokeByIdOrName(req, res);

@@ -1,4 +1,7 @@
-const { createUser, getAllUsers, getUserById, updateUser, deleteUser } = require("../services/userService");
+const { createUser } = require('../services/userService/createUserService');
+const { getUserById, getAllUsers } = require('../services/userService/findUserService');
+const { updateUser } = require('../services/userService/updateUserService');
+const { deleteUser } = require("../services/userService/deleteUserService");
 
 exports.create = (req, res) => {
     createUser(req, res);
