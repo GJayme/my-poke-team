@@ -2,16 +2,16 @@ const db = require('../../models');
 const User = db.users;
 
 const createUser = async (req, res) => {
-    if (!req.body.name || !req.body.gender || !req.body.password) {
+    if (!req.body.name || !req.body.email || !req.body.password) {
         res.status(400).send({
-            message: 'Name, gender and password could not be empty.'
+            message: 'Name, email and password could not be empty.'
         });
         return;
     }
 
     const user = {
         name: req.body.name,
-        gender: req.body.gender,
+        email: req.body.email,
         password: req.body.password
     };
 

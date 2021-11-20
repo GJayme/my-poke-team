@@ -10,8 +10,8 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false,
         },
-        gender: {
-            type: Sequelize.ENUM('male', 'female'),
+        email: {
+            type: Sequelize.STRING,
             allowNull: false,
         },
         password: {
