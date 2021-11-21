@@ -23,7 +23,12 @@ const getTeamByUserId = async (req, res) => {
         type: db.sequelize.QueryTypes.SELECT
     })
         .then(data => {
-            res.send(data);
+            const response = {
+                id: data[0].id,
+                name: data[0].name,
+                pokes: JSON.parse(data[0].pokes)
+            }
+            res.send(response);
         })
         .catch(err => {
             res.status(400).send({
