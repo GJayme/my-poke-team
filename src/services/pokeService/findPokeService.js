@@ -57,6 +57,8 @@ function buildPokeDto(poke) {
 
 function setAbilities(poke) {
     const abilities = [];
-    poke.abilities.forEach(ability => abilities.push(ability.ability.name))
+    if (poke.abilities !== undefined) {
+        poke.abilities.forEach(ability => abilities.push(ability.ability.name))
+    }
     return abilities;
 }
